@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>贪吃蛇</title>
+</head>
+<style>
+/*body{
+}*/
+*{
+	margin:0;
+	padding:0;
+	list-style: none;
+}
+a{
+	text-decoration: none;
+}
+    .big{
+    	height:601px;
+    	width:1200px;
+    	background:#fff;
+    	/*background-image:url(img/背.jpg);*/
+    	margin:0 auto;
+    	position: relative;
+		display: none;
+
+    }
+    .box{
+    	height:600px;
+    	width:1224px;
+    	margin:0 auto;
+    }
+    .bei{
+    	height:600px;
+    	width:1224px;
+    	position: relative;
+    }
+    .play{
+    	height:65px;
+    	width:400px;
+    	position: absolute;
+    	top:150px;
+    	right:480px;
+    	background: red;
+    	opacity: 0;
+    }
+    .one{
+    	height:600px;
+    	width:1000px;
+    	/*margin:0 auto;*/
+    	/*float:right;*/
+    	position: absolute;
+    	right:100px;
+    	top:0;
+    }
+    .dashu{
+    	height:200px;
+    	width:100px;
+    	position:fixed;
+    	/*position:relative;*/
+    	left:5px;
+    	top:0;
+    	display: none;
+    }
+    .two{
+    	height:601px;
+    	width:200px;
+    	float:right;
+    	position: absolute;
+    	right:900px;
+    	top:0;
+    }
+	#sence{
+		width: 600px;
+		height:600px;
+		border:1px solid #000;
+		position: absolute;
+		top:0;
+		left:300px;
+		/*background:#000;*/
+		border-right: none;
+		border-bottom: none;
+	}
+	.block{
+		width:29px;
+		height:29px;
+		float:left;
+		margin:0 1px 1px 0;
+		background:green;
+		/*background-image:url(img/星.png);*/
+		opacity: 0.5;
+	}
+	.xuanxiang{
+		display:inline-block;
+		position: relative;
+		float: left;
+		text-align: center;
+		line-height: 50px;
+	}
+
+	.xuanxiang .change{
+		color:#ACAFAC;
+		display: block;
+		background:black;
+		height:50px;
+		width:60px;
+		line-height: 50px;
+		float: left;
+		font-weight:bold;
+		/*border-radius: 50%;*/
+
+	}
+	.shiwu{
+		background:#000;
+		background-image:url(img/shi.png);
+		opacity: 1;
+		background-size: 100%;
+		background-repeat: none;
+	}
+	.she{
+		background:red;
+		/*border-radius: 50%;*/
+
+	}
+	.gezi{
+		display: block;
+		font-size: 16px;
+		/*color:#ccc;*/
+		font-weight: bold;
+		position: absolute;
+		left:80px;
+		top:10px;
+		height:30px;
+		width:200px;
+	}
+	.gezi a{
+		color:#000;
+
+	}
+	input{
+		position: absolute;
+		left:80px;
+		top:50px;
+	}
+	.shu{
+		/*background:black;*/
+		height:30px;
+		width:50px;
+		margin-left: 5px;
+		display: inline-block;
+		color:#000;
+		font-weight: bold;
+		line-height: 30px;
+		position: absolute;
+		left:150px;
+		top:150px;
+	}
+	.shu1{
+		height:30px;
+		width:50px;
+		margin-left: 5px;
+		display: inline-block;
+		color:#000;
+		font-weight: bold;
+		line-height: 30px;
+		position: absolute;
+		left:220px;
+		top:140px;
+	}
+	.shu2{
+		height:30px;
+		width:50px;
+		margin-left: 5px;
+		display: inline-block;
+		color:#000;
+		font-weight: bold;
+		line-height: 30px;
+		position: absolute;
+		left:280px;
+		top:170px;
+	}
+	.go{
+		height:200px;
+		width:40px;
+		border-bottom: 1px solid #979897;
+		color:#000;
+		font-size: 16px;
+		line-height: 40px;
+		margin-top: 30px;
+		font-weight: bold;
+		position: absolute;
+		left:20px;
+		top:100px;
+
+	}
+	.stop{
+		height:40px;
+		width:200px;
+		border-bottom: 1px solid #979897;
+		color:#000;
+		font-size: 16px;
+		line-height: 40px;
+		margin-top:20px;
+		font-weight: bold;
+		position: absolute;
+		left:20px;
+		top:150px;
+
+	}
+	.restart{
+		height:40px;
+		width:200px;
+		border-bottom: 1px solid #979897;
+		color:#9A0213;
+		font-size: 16px;
+		background:#B77B16;
+		line-height: 40px;
+		margin-top:20px;
+		font-weight: bold;
+
+	}
+	.tou{
+		background:black;
+	}
+	.change a{
+		color:white;
+	}
+	.tt{
+		height:200px;
+		width:200px;
+		background:red;
+		display:none;
+		position: absolute;
+		top:0;
+		left:0;
+		right:0;
+		bottom:0;
+		margin:auto;
+		z-index:35;
+	}
+	
+</style>
+<body>
+	<div class="big">
+		
+		<img src="img/0.jpg" alt="" class="one">
+		<!-- <img src="img/背景.jpg" alt="" class="two"> -->
+		<div id="sence">
+			<!-- <div id="sence-wrapper"></div> -->
+		</div>
+		<div class="xuanxiang">
+				<a href="" class="change">选项</a>
+				<div class="dashu">
+					<img src="img/shu1.png" alt="">
+					<a href="" class="gezi">选择格子</a>
+					<input type="text" id="hangxuanze" placeholder="请输入5~45的数">
+					<ul>
+						<li class="shu" data-row="15">15*15</li>
+						<li class="shu1" data-row="20">20*20</li>
+						<li class="shu2" data-row="30">30*30</li>
+					</ul>
+					<ul>
+						<li class="go">开始</li>
+						<li class="stop">暂停</li>
+						<!-- <li class="restart">重新开始</li> -->
+					</ul>
+			
+				</div>
+		</div>
+		<div class="right"></div>
+		<!-- <div class="tt"></div> -->
+	</div>
+	<div class="box">
+		<img src="img/beijing.png" alt="" class="bei">
+		<div class="play"></div>
+	</div>
+	
+	<!-- <input type="text" id="hangxuanze"> -->
+	
+	
+
+	<script src="animate.js"></script>
+	<script src="function.js"></script>
+	<script src="贪吃蛇.js"></script>
+	<script src="./jquery工程文件/jquery-1.12.0.js"></script>
+
+	<script>
+	$(function(){
+		var she=[{x:0,y:0},{x:0,y:1},{x:0,y:2}],
+		 shiwu=null,
+		 zuo=39,
+		 timeId,
+		 speed=100,
+		 hang=20;
+
+
+
+		//画场景
+		var xy2id=function(x,y){return x+'-'+y;}                  //构造一个坐标函数
+		var draw=function(){
+			var wh=Math.floor(600/hang)
+			var sence=$('#sence')
+			sence.empty()
+			for(var i=0;i<hang;i++){
+				for(var j=0;j<hang;j++){
+					$('<div>')
+					.attr('id',xy2id(i,j))
+					.width(wh-1)
+					.height(wh-1)
+					.addClass('block')
+					.appendTo(sence)
+				}
+			}
+			sence.width(wh*hang).height(wh*hang)
+		}
+		draw()
+
+
+		// 放食物
+		var fangshiwu=function(){
+			var _x=Math.floor(Math.random()*hang)
+			var _y=Math.floor(Math.random()*hang)
+			$('#'+xy2id(_x,_y)).addClass('shiwu')
+			return {x:_x,y:_y}
+		}
+		shiwu=fangshiwu()
+		// 画蛇
+		var huashe=function(){
+			she.forEach(function(v){
+				$('#'+xy2id(v.x,v.y)).addClass('she')
+			})
+			
+		}
+		huashe()
+
+
+		// 让蛇跑
+		var move=function(){
+			var jiutou=she[she.length-1]
+			if(zuo===39){
+				var xintou={x:jiutou.x,y:jiutou.y+1}
+			}else if(zuo===40){
+				var xintou={x:jiutou.x+1,y:jiutou.y}
+			}else if(zuo===37){
+				var xintou={x:jiutou.x,y:jiutou.y-1}
+			}else if(zuo===38){
+				var xintou={x:jiutou.x-1,y:jiutou.y}
+			}
+
+
+			// 撞到墙
+			if(xintou.x<0||xintou.x>hang-1||xintou.y<0||xintou.y>hang-1){
+				
+				stop1();
+				// alert('Game over!!!')
+				// return;
+				// $('.tt')
+				// .css('display','block')
+
+			}
+			// if(dict[xintou.x'-'xintou.y]){
+			// 	return;
+			// 	alert('Game over!!!')
+			// 	stop()
+			// }
+
+			// 吃到食物
+			if(xintou.x===shiwu.x && xintou.y===shiwu.y){
+				she.push(xintou)
+				$('#'+xy2id(xintou.x,xintou.y)).addClass('she')
+				$('.shiwu').removeClass('shiwu')
+				shiwu=fangshiwu()
+
+			}else{
+				she.push(xintou)
+				$('#'+xy2id(xintou.x,xintou.y)).addClass('she')
+				var weiba=she.shift()
+				$('#'+xy2id(weiba.x,weiba.y)).removeClass('she')
+			}
+		}
+      // 开始游戏
+      var start1=function(){
+      	
+      	clearInterval(timeId)
+      	timeId=setInterval(move,speed)
+      }
+      var stop1=function(){
+      	clearInterval(timeId)
+      }
+      var restart=function(){
+      	stop1()
+      	$('.she').removeClass('she');
+        $('.shiwu').removeClass('shiwu');
+      	hang=20,
+      	she=[{x:0,y:0},{x:0,y:1},{x:0,y:2}],
+      	shiwu=null,
+      	timeId,
+      	zuo=39,
+      	speed=100;
+      	draw();
+      	huashe();
+      	shiwu=fangshiwu();
+      	move()
+      	// start1();
+      }
+      // start1();
+
+
+      $('.go').bind('click',start1)
+      $('.stop').bind('click',stop1)
+      $(document).bind('keydown',function(e){
+      	zuo=e.keyCode;
+      })
+       // 点击绘制界面
+      $('ul li[data-row]').bind('click',function(){
+      	$('li active').removeClass('active')
+      	$(this).addClass('active')
+      	hang=Number($(this).attr('data-row'))
+      	draw()
+      	huashe()
+      	shiwu=fangshiwu()
+      })
+
+
+		//输入页面绘制
+		$('#hangxuanze').bind('keydown',function(e){
+			if(e.keyCode===13){
+				hang=$(this).val();
+				draw()
+				huashe()
+      			shiwu=fangshiwu()
+			}
+		})
+
+
+		$('.play').bind('click',function(){
+			$('.big')
+			.css('display','block')
+			$('.box').css('display','none')
+		})
+
+		// $('.she').eq(0).addClass('tou')
+})
+	</script>
+</body>
+</html>
